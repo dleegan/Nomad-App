@@ -50,7 +50,7 @@ struct CityCell: View {
                         Spacer()
                         HStack {
                             // Température
-                            Text("\(getWeatherSymbol()) \(city.temperature)°")
+                            Text("\(city.getWeatherSymbol()) \(city.temperature)°")
                             Spacer()
                             // Coût moyen
                             Text("$\(city.averageCost) / mo")
@@ -64,19 +64,9 @@ struct CityCell: View {
         }
         .padding(.horizontal)
     }
-
-    func getWeatherSymbol() -> String {
-        switch city.averageWeather {
-            case .sunny:
-                return "☀️"
-            case .cloudy:
-                return "⛅"
-            case .rainy:
-                return "🌧️"
-        }
-    }
 }
 
-#Preview {
+#Preview(traits: .sizeThatFitsLayout) {
     CityCell(city: previewCollection.cities[0])
+        .padding()
 }
