@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CityListView: View {
     @StateObject var myCollection: CityCollection = previewCollection
+    
 
     var body: some View {
         NavigationStack {

@@ -9,13 +9,13 @@ import SwiftUI
 
 struct CityDetailsView: View {
     @ObservedObject var city: City
-    @State var note: Int = 2
+    @State var note: Int = 0
     @State var text: String = ""
 
     var body: some View {
         ScrollView {
             VStack {
-                Image("bangkok-thailand")
+                Image(city.imageName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: .infinity)
@@ -61,7 +61,7 @@ struct CityDetailsView: View {
 
                 Divider()
 
-                VStack(spacing: 10) {
+                VStack(alignment: .leading, spacing: 10) {
                     Text("Reviews:")
                         .bold()
 
@@ -75,26 +75,52 @@ struct CityDetailsView: View {
                                 .stroke(.placeholder.opacity(0.5))
                         }
 
-                    Button {
-                        city.postReview(note: note, text: text)
-                        note = 0
-                        text = ""
-                    } label: {
-                        Text("Post Review")
+                    HStack {
+                        ForEach(1 ... 5, id: \.self) { index in
+                            Image(systemName: autoStars(index))
+                                .onTapGesture {
+                                    note = index
+                                }
+                        }
+                        Spacer()
+
+                        Button {
+                            city.postReview(note: note, text: text)
+                            note = 0
+                            text = ""
+                        } label: {
+                            Text("Post Review")
+                                .foregroundStyle(.white)
+                                .font(.system(size: 16, weight: .bold))
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundStyle(Color(red: 0.999, green: 0.276, blue: 0.257))
+                                )
+                        }
                     }
                 }
-                .frame(width: .infinity, alignment: .leading)
+                .frame(alignment: .topLeading)
                 .padding()
 
-                VStack {
-                    Text("review.text")
+                VStack(alignment: .leading) {
                     ForEach(city.reviews) { review in
-                        Text(review.text)
+                        ReviewCell(review: review)
                     }
                 }
             }
         }
         .ignoresSafeArea()
+    }
+
+    private func autoStars(_ index: Int) -> String {
+        let rest = note - index
+
+        if rest >= 0 {
+            return "star.fill"
+        } else {
+            return "star"
+        }
     }
 }
 

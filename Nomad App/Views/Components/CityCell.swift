@@ -12,7 +12,7 @@ struct CityCell: View {
 
     var body: some View {
         VStack {
-            Image("bangkok-thailand")
+            Image(city.imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .overlay(content: {
